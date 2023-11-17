@@ -1,10 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:products/cart/cart_cubit.dart';
-import 'package:products/main.dart';
-import '../pages/main_page.dart';
 
+import 'package:products/service/all_package.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -14,8 +9,10 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<CartController>(create: (context)=> cartController),
-
-        BlocProvider<CartRepozitory>(create: (context)=> cartRepozitory),
+        BlocProvider<CartRepository>(create: (context)=> cartRepository),
+        BlocProvider<OrderCubit>(create: (context)=> orderRepository),
+        BlocProvider<LocalCubit>(create: (context)=> localCubit),
+        BlocProvider<UploadCubit>(create: (context)=> uploadCubit),
       ],
       child: ScreenUtilInit(
         minTextAdapt: true,

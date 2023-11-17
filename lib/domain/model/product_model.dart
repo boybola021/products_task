@@ -1,6 +1,6 @@
 
-
-import 'package:equatable/equatable.dart';
+import 'dart:math';
+import '../../service/all_package.dart';
 
 class Products{
  int id;
@@ -34,13 +34,13 @@ class Products{
 
 
  Map<String,Object> toJson() => {
-        "id" : id,
+       "id" : id,
        "title" : title,
        "price" : price,
        "description" : description,
        "category" : category,
        "image" : image,
-       "rating" : rating.toJson(),
+       "rating": rating.toJson(),
  };
 
  @override
@@ -80,6 +80,20 @@ class CartItem{
     this.quantity = 1,
     required this.products,
 }) : total = quantity * products.price;
+
+  factory CartItem.fromJson(Map<String,Object?> json){
+    return CartItem(
+        id: json["id"] as int,
+        quantity: json["quantity"] as int,
+        products: Products.fromJson(json["products"] as Map<String,Object?>),
+    );
+  }
+
+  Map<String,Object> toJson() => {
+   "id": Random().nextInt(1000),
+    "quantity": quantity,
+   "products":products.toJson(),
+  };
 
   @override
   String toString() {

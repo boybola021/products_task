@@ -1,13 +1,17 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:products/app/app.dart';
-import 'package:products/cart/cart_cubit.dart';
-import 'package:products/core/service_locatore.dart';
+import 'package:products/src/service_locator.dart';
+import 'package:products/service/all_package.dart';
 
 final cartController = CartController();
-final cartRepozitory =  CartRepozitory();
-void main(){
+final cartRepository =  CartRepository();
+final orderRepository =  OrderCubit();
+final localCubit = LocalCubit();
+final uploadCubit = UploadCubit();
+void main()async{
   WidgetsFlutterBinding.ensureInitialized();
+  /// #http service
   serviceLocator();
+  /// #local service
+  await serviceLocatorLocal();
   runApp(const App());
 }

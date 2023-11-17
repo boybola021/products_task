@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:products/main.dart';
-import 'package:products/model/product_model.dart';
-import 'package:products/pages/main_page.dart';
-import 'package:products/pages/shop_page.dart';
+
+
+import 'package:products/service/all_package.dart';
+import '../domain/model/product_model.dart';
 
 class DetailPage extends StatefulWidget {
   final Products products;
@@ -15,7 +12,6 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  bool isLike = false;
   int count = 0;
   @override
   Widget build(BuildContext context) {
@@ -30,16 +26,6 @@ class _DetailPageState extends State<DetailPage> {
         centerTitle: true,
         title: const Text("Detail",style: TextStyle(fontSize: 25,color: Colors.black,fontWeight: FontWeight.w600),
         ),
-        actions: [
-          IconButton(
-              onPressed: (){
-                isLike = !isLike;
-                setState(() {});
-              },
-            icon:  Icon(isLike? CupertinoIcons.heart : CupertinoIcons.heart_fill,color: Colors.red,),
-          ),
-         const SizedBox(height: 10,),
-        ],
       ),
       bottomSheet: StreamBuilder(
         stream: cartController.stream,
@@ -75,7 +61,7 @@ class _DetailPageState extends State<DetailPage> {
                 GestureDetector(
                   onTap: (){
                     if(count > 0){
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ShopPage()));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainPage()));
                     }
                   },
                   child: Container(
@@ -161,7 +147,3 @@ class _DetailPageState extends State<DetailPage> {
   }
 }
 
-
-sealed class KTColors{
-  static const orange =  Color.fromRGBO(198, 124, 78, 1);
-}

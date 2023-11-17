@@ -1,125 +1,85 @@
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:products/cart/cart_cubit.dart';
-import 'package:products/main.dart';
-import 'package:products/pages/detail_page.dart';
-
+import 'package:products/pages/order_page.dart';
+import 'package:products/service/all_package.dart';
 
 
 class ShopPage extends StatelessWidget {
   const ShopPage({
     Key? key,
-
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        centerTitle: true,
+        title: Text(
           "Order page",
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontSize: 20.sp),
         ),
       ),
-      body: SizedBox.expand(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 600,
-              child: StreamBuilder<CartState>(
-                  initialData: cartController.state,
-                  stream: cartController.stream,
-                  builder: (context, state) {
-                    return state.hasData ?
-                    ListView.builder(
-                      itemCount: state.data?.item.length,
-                      itemBuilder: (context, i) {
-                        final data = state.data!.item[i];
-                        final items = data.products;
-                        return SizedBox(
-                          height: 150,
-                          child: ListTile(
-                            title:  Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  items.title.length < 10
-                                      ? items.title
-                                      :items.title
-                                      .replaceRange(10, null, "..."),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(fontSize: 20,),
-                                ),
-                                Text("\$ ${data.total} ",style: const TextStyle(color: KTColors.orange,fontSize: 20),),
-                              ],
-                            ),
-                            leading: Transform.scale(
-                              scale: 1.5,
-                              child: Transform.translate(
-                                offset: const Offset(0, -30),
-                                child: Image.network(
-                                  height: 90,
-                                  width: 90,
-                                  items.image,
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ),
-                            subtitle: SizedBox(
-                              width: 100,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        height: 50,
-                                        width: 120,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(10)),
-                                          border: Border.all(
-                                            width: 1,
-                                            color: Colors.grey,),),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            IconButton(onPressed: (){
-                                              cartController.addToCard(product: items, quantity: -1);
-                                            }, icon: const Icon(Icons.remove),),
-                                            Text(
-                                                data.quantity.toString(),style: const TextStyle(fontSize: 20),),
-                                            IconButton(onPressed: (){
-                                              cartController.addToCard(product: items, quantity: 1);
-                                            }, icon: const Icon(Icons.add),),
-                                          ],
-                                        ),
-                                      ),
-                                      IconButton(
-                                        onPressed: (){
-                                          cartController.addToCard(product: items, quantity: -1);
-                                        },
-                                        icon: const Icon(CupertinoIcons.delete),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ): const Center(child: Text("No Data",style: TextStyle(fontSize: 20),),);
-                  }
+      body: BlocBuilder<CartController, CartState>(
+        builder: (context, state) {
+         if(state is CartLoadingState || state is CartInitialState){
+           return const LoadingPage();
+         }
+         else if(state.item.isNotEmpty){
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: state.item.length,
+                padding: EdgeInsets.symmetric(horizontal: 15.sp),
+                itemBuilder: (context, i) {
+                  final data = state.item[i];
+                  final items = data.products;
+                  return CustomListTileShopPage(items: items,data: data,);
+                },
               ),
-            ),
-
-          ],
-        ),
+              SizedBox(height: 20.h,),
+              SizedBox(
+                height: 45.h,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      fixedSize: Size( MediaQuery.sizeOf(context).width, 45.h),
+                      alignment: Alignment.center,
+                      backgroundColor: KTColors.orange,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(40.r)),
+                      ),
+                    ),
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) =>  OrderPage(item: state.item,)));
+                      orderRepository.orderMethod(
+                          orderModel: OrderModel(
+                              id: 1,
+                              userId: 4,
+                              date: DateTime.now(),
+                              products: state.item.map((e) => OrderProduct(productId: e.id ?? 1, quantity: e.quantity)).toList(),
+                          )
+                      );
+                    },
+                    child: Text("Buy Now",style: TextStyle(fontSize: 23.sp,color: Colors.white),),
+                  ),
+                ),
+              ),
+            ],
+          );
+         }else if(state is CartFailureState){
+           return Center(
+             child: Padding(
+               padding:  EdgeInsets.symmetric(horizontal: 20.sp),
+               child: Text(state.message,style: TextStyle(fontSize: 23.sp),),
+             ),
+           );
+         }
+         else{
+           return Center(child: Text("Cart empty",style: TextStyle(fontSize: 25.sp),),);
+         }
+        },
       ),
     );
   }
