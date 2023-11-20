@@ -215,6 +215,8 @@ class UserCartDetail extends StatelessWidget {
                         );
                       },
                     );
+                  }else if(state is CartLoading || state is CartInitial){
+                    return const LoadingPage();
                   } else {
                     return Center(
                       child: Text(
