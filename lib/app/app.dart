@@ -17,7 +17,7 @@ class App extends StatelessWidget {
       child: ScreenUtilInit(
         minTextAdapt: true,
         splitScreenMode: true,
-        child: const AdminPage(),
+        child: const MainPage(),
         builder: (context, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
