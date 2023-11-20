@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:products/domain/model/order_model.dart';
+import 'package:products/domain/model/user_model.dart';
 import 'package:products/service/all_package.dart';
 part 'order_state.dart';
 
@@ -23,16 +24,29 @@ class OrderCubit extends Cubit<OrderState> {
   }
 
   void orderUserCart()async{
+    emit(OrderLoadingState());
     try{
-      emit(OrderLoadingState());
       final data = await repozitory.fetchUserCart();
       if(data.isNotEmpty){
        emit(OrderGetUserCartState(orderModel: data));
+      }
+    }catch(e){
+      debugPrint("Error orderUserCart => $e");
+      emit(OrderFailureState(message: KTStrings.somethingError));
+    }
+  }
+
+  void orderUser()async{
+    try{
+      emit(OrderLoadingState());
+      final data = await repozitory.fetchUser();
+      if(data.isNotEmpty){
+        emit(OrderGetUserState(userModel: data));
       }else{
         emit(OrderFailureState(message: KTStrings.checkData));
       }
     }catch(e){
-      debugPrint(e.toString());
+      debugPrint("Error orderUser => $e");
       emit(OrderFailureState(message: KTStrings.somethingError));
     }
   }

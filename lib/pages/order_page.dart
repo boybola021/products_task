@@ -20,7 +20,7 @@ class OrderPage extends StatelessWidget {
                   onPressed: () {
                     localCubit.createHistoryOrder(item: item);
                     cartController.allDeleteItems(item);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const MainPage()));
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const MainPage()), (route) => false);
                   },
                   child:  Text("Ok",style: TextStyle(fontSize: 20.sp),),
                 ),

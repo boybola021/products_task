@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
         title: Text("Home page",style: TextStyle(fontSize: 25.sp,),),
         actions: const [
           CustomBadgeView(),
-         SizedBox(width: 10,),
+         SizedBox(width: 15,),
         ],
       ),
       body: BlocBuilder<CartRepository,CartAllDataState>(

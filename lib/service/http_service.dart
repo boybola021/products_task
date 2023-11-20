@@ -5,8 +5,10 @@ import 'package:products/service/all_package.dart';
 abstract class Network{
   Future<String?>getMethod({String baseUrl = Api.baseUrl,String api = Api.apiGetSingleCategory,required String category});
   Future<String?>getSingleMethod({String baseUrl = Api.baseUrl,String api = Api.apiProduct});
+  Future<String?>getOderProductMethod({String baseUrl = Api.baseUrl,String api = Api.apiProduct});
   Future<String?>getCategory({String baseUrl = Api.baseUrl,String api = Api.apiCategory});
   Future<String?>getUserCart({String baseUrl = Api.baseUrl,String api = Api.apiAddCart});
+  Future<String?>getUser({String baseUrl = Api.baseUrl,String api = Api.apiUser});
   Future<String?>postMethod({String baseUrl = Api.baseUrl,String api = Api.apiAddCart,required Map<String,Object> data});
   Future<String?>postProducts({String baseUrl = Api.baseUrl,String api = Api.apiProduct,required Map<String,Object> data});
   }
@@ -64,6 +66,7 @@ class HttpNetwork extends Network {
     return null;
   }
 
+
   @override
   Future<String?> getUserCart(
       {String baseUrl = Api.baseUrl, String api = Api.apiAddCart}) async {
@@ -110,6 +113,39 @@ class HttpNetwork extends Network {
     } catch (e) {
       debugPrint("Error getSingleMethod => : $e");
       throw Exception("ERROR getSingleMethod => : $e");
+    }
+    return null;
+  }
+
+  @override
+  Future<String?> getUser({String baseUrl = Api.baseUrl, String api = Api.apiUser})async{
+   try{
+     Uri uri = Uri.http(baseUrl,api);
+     final response = await get(uri);
+     debugPrint("Response getUser Stateus Code: ${response.statusCode}");
+     if (response.statusCode == 200 || response.statusCode == 201) {
+       //debugPrint("Response getUser");
+       return response.body;
+     }
+   }catch(e){
+     debugPrint("Error getUser => : $e");
+     throw Exception("ERROR getUser => : $e");
+   }
+   return null;
+  }
+
+  @override
+  Future<String?> getOderProductMethod({String baseUrl = Api.baseUrl, String api = Api.apiProduct})async{
+    try {
+      Uri url = Uri.http(
+          baseUrl, api);
+      final response = await get(url);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return response.body;
+      }
+    } catch (e) {
+      debugPrint("Error: getMethod => $e");
+      throw Exception("ERROR: getMethod => $e");
     }
     return null;
   }

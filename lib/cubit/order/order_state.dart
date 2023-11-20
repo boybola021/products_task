@@ -17,6 +17,11 @@ class OrderGetUserCartState extends OrderState {
   OrderGetUserCartState({required this.orderModel});
 }
 
+class OrderGetUserState extends OrderState {
+  final List<UserModel> userModel;
+  OrderGetUserState({required this.userModel});
+}
+
 class OrderInitialState extends OrderState {}
 
 class OrderLoadingState extends OrderState {}

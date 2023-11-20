@@ -58,6 +58,20 @@ class CartRepository extends Cubit<CartAllDataState>{
    }
   }
 
+  void allOrderProduct()async{
+    emit(CartLoading());
+   try{
+     final data = await repozitory.fetchOrderProductData();
+     if(data.isNotEmpty){
+       emit(GetAllOrderProductState(products: [...data]));
+     }else{
+       debugPrint("Error: allOrderProduct => $data");
+     }
+   }catch(e){
+     debugPrint("Error: $e");
+   }
+  }
+
   void singleProduct({required int id})async{
     emit(CartLoading());
    try{

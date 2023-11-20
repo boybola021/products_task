@@ -44,6 +44,11 @@ class GetAllProductState extends CartAllDataState{
    const GetAllProductState({required this.products});
 }
 
+class GetAllOrderProductState extends CartAllDataState{
+   final List<Products> products;
+   const GetAllOrderProductState({required this.products});
+}
+
 class GetSingleProductState extends CartAllDataState{
    final Products products;
    const GetSingleProductState({required this.products});
