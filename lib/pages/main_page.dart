@@ -5,7 +5,8 @@ import 'history_page.dart';
 import 'home_page.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  final int? index;
+  const MainPage({super.key,this.index});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -50,7 +51,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    controller = PageController(initialPage: 0);
+    controller = PageController(initialPage: widget.index ?? currentIndex);
   }
 
   @override
@@ -60,7 +61,7 @@ class _MainPageState extends State<MainPage> {
         elevation: 0,
         selectedItemColor: const Color.fromRGBO(198, 124, 78, 1),
         unselectedItemColor: Colors.grey,
-        currentIndex: currentIndex,
+        currentIndex: widget.index ?? currentIndex,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
           currentIndex = index;

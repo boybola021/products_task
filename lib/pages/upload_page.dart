@@ -61,7 +61,7 @@ class _UploadPageState extends State<UploadPage> {
         KTScaffoldMessage.scaffoldMessage(context, KTStrings.successfullyUpload,
             color: Colors.green);
         Navigator.pushReplacement(context,
-            CupertinoPageRoute(builder: (builder) => const AdminPage()));
+            CupertinoPageRoute(builder: (builder) => const MainPage(index: 3,)));
       }
       setState(() => isLoading = false);
     }
@@ -74,6 +74,14 @@ class _UploadPageState extends State<UploadPage> {
     if (file != null && mounted) {
       setState(() {});
     }
+  }
+
+  @override
+  void dispose() {
+    controllerName.dispose();
+    controllerDescription.dispose();
+    controllerPrice.dispose();
+    super.dispose();
   }
 
   @override

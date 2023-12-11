@@ -4,9 +4,9 @@ import 'package:products/service/all_package.dart';
 
 final cartController = CartController();
 final cartRepository =  CartRepository();
-final orderRepository =  OrderCubit();
 final localCubit = LocalCubit();
 final uploadCubit = UploadCubit();
+final orderRepository =  OrderCubit();
 void main()async{
   WidgetsFlutterBinding.ensureInitialized();
   /// #http service
